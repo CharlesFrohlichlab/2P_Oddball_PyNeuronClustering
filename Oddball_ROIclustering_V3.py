@@ -1,10 +1,16 @@
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
 
-This is a temporary script file.
-"""
+#Dimensionality Reduction and Clustering of 2-photon Neuron Activity 
+#This code takes in trial-averaged 2-photon calcium imaging activity across all recorded neurons 
+# (matrix dimensions are neuron by sample). The second dimension is samples of time where conditions can
+#  be appended together (for example in the oddball paradigm, first third of samples are from standard context, 
+# then deviant, then control). The data are first z-scored, then PCA is performed across time to reduce the number of 
+# "features", then the silhouette score is used to assess the optimal number of clusters to ask for, then finally the
+# clustering algorithm is run and samples (neurons) are clustered.
 
+# Input: *cluster file output from the script: E:\Dropbox (Frohlich Lab)\Frohlich Lab Team Folder\Codebase\CodeCharles\VAOddballAnalysis\Ca2+\VAOddball_EvtRelatedCaSplice_MK801_V14.m This contains the matrix 'data' that contains the neural activity data (matrix dimensions are neuron by sample)
+# Output: E:/2pdata/GroupLevel/evtRel_toPythonClust/clusteredData/animalNum file that contains each ROI's cluster family ID
+ 
+# 2018/12/14 - Zhe Charles Zhou
 
 from __future__ import print_function
 
@@ -38,21 +44,19 @@ import matplotlib.cm as cm
 
 import pylab as plt
 
-###
+### Load matlab data
 
 animalNum = 'All';
 mat = scipy.io.loadmat('E:/2pdata/GroupLevel/evtRelated_devStandCtrl/1/allAnimals_cluster')
 #mat = scipy.io.loadmat('E:/2pdata/GroupLevel/evtRelated_devStandCtrl/1/session/0148_VisualOddball_201802091_cluster')
 #print(mat)
 
-##
+## Get info about data
 
 data = mat.get('toPythonClustAll') 
 numSamples = len(data)
 print( str(numSamples) + ' ROIs')
 # print(data)
-
-##
 
 # z-score the data - important to scale the data for subsequent PCA and clustering
 
